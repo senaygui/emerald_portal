@@ -4,12 +4,8 @@ lock "~> 3.17.3"
 
 set :application, "master"
 # set :ssh_options, { :forward_agent => true }
-set :repo_url, "https://github.com/senaygui/hope_portal_system.git"
+set :repo_url, "https://github.com/senaygui/nuf_africa_portal.git"
 
-
-set :git_http_username, 'senaygui' 
-ask(:github_token, "github_token", echo: false) 
-set :git_http_password, fetch((:github_token))
 #set :git_strategy, Capistrano::Git::SubmoduleStrategy
 
 # set :user, "deploy"
@@ -18,7 +14,7 @@ set :passenger_restart_with_touch, true
 # set :deploy_to, "/home/deploy/yic_production"
 set :stages, %w(production staging)
 # append :linked_files, "config/database.yml", "config/master.key"
-append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor/bundle", "public/system", "public/uploads"
+append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor/bundle", "public/system", "public/uploads", "storage"
 
 set :keep_releases, 10
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }

@@ -41,8 +41,7 @@ $(document).ready(function () {
   $('#admin_user_role').change(function() {
     toggleFields();
   });
-t  
-  
+
   $("#student_photo").change(function (data) {
 
     var imageFile = data.target.files[0];
@@ -96,7 +95,7 @@ t
     }
   });
 
-  $('#header').before("<div class='headline'><div class='banner-logo'></div> <h1 class='banner-title'> HEUC Registrar Portal</h1></div>");
+  $('#header').before("<div class='headline'><div class='banner-logo'></div></div>");
 
 
   $('.link').on('click', function (e) {

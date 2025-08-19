@@ -32,15 +32,15 @@
     <div class="card border-primary">
       <div class="card-body text-center">
         <% if payment.bank_logo.present? %>
-          <%= image_tag(payment.bank_logo, size: '100x100', class: 'img-fluid rounded-circle') %>
+          <%= image_tag(payment.bank_logo, size: '200x200', class: 'img-fluid ') %>
         <% else %>
           <i class="fas fa-bank fa-3x text-muted"></i> <!-- Placeholder icon if no logo -->
         <% end %>
-        <h5 class="card-title mt-2"><%= payment.bank_name %></h5>
+        
       </div>
       <div class="card-footer text-muted">
         <%if params[:invoice_id].present? %>
-          <%= link_to 'Use This Method', { controller: "payment_transactions", action: "new", invoice_id: params[:invoice_id], payment_method_id: payment.id }, class: 'btn btn-primary btn-block' %>
+          <%= link_to "#{payment.bank_name}", { controller: "payment_transactions", action: "new", invoice_id: params[:invoice_id], payment_method_id: payment.id }, class: 'btn btn-primary btn-block' %>
         <%else%>
           <%= link_to 'Use This Method', { controller: "payment_transactions", action: "new", other_payment_id: params[:other_payment_id], payment_method_id: payment.id }, class: 'btn btn-primary btn-block' %>
         <%end%>

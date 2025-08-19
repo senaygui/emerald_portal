@@ -52,28 +52,14 @@
               <th>Course Title</th>
               <th>Course Code</th>
               <th>Program</th>
-              <th>Curriculum</th>
-              <th>Year</th>
-              <th>Semester</th>
-              <th>Credit Hour</th>
-              <th>Lecture Hour</th>
-              <th>Lab Hour</th>
-              <th>Contact Hour</th>
             </tr>
           </thead>
           <tbody>
             <% @courses.each do |course| %>
               <tr>
                 <td><%= course.course_title %></td>
-                <td><%= course.course_code %></td>
-                <td><%= course.program.program_name %></td>
-                <td><%= course.curriculum.curriculum_version %></td>
-                <td><%= course.year %></td>
-                <td><%= course.semester %></td>
-                <td><%= course.credit_hour %></td>
-                <td><%= course.lecture_hour %></td>
-                <td><%= course.lab_hour %></td>
-                <td><%= course.ects %></td>
+                <td><%= course.course.course_code %></td>
+                <td><%= course.student.program.program_name %></td>
               </tr>
             <% end %>
           </tbody>

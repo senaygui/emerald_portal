@@ -4,12 +4,12 @@ ActiveAdmin.setup do |config|
   # Set the title that is displayed on the main layout
   # for each of the active admin pages.
   #
-  config.site_title = "HEUC"
+  config.site_title = 'Nuf Africa '
 
   # Set the link url for the title. For example, to take
   # users to your main site. Defaults to no link.
   #
-  config.site_title_link = "/"
+  config.site_title_link = '/'
 
   # Set an optional image to be displayed for the header
   # instead of a string (overrides :site_title)
@@ -83,7 +83,7 @@ ActiveAdmin.setup do |config|
   # config.on_unauthorized_access = :access_denied
   config.authorization_adapter = ActiveAdmin::CanCanAdapter
   config.on_unauthorized_access = :access_denied
-  config.cancan_ability_class = "Ability"
+  config.cancan_ability_class = 'Ability'
   # == Current User
   #
   # Active Admin will associate actions with the current
@@ -156,7 +156,7 @@ ActiveAdmin.setup do |config|
   # You can exclude possibly sensitive model attributes from being displayed,
   # added to forms, or exported by default by ActiveAdmin
   #
-  config.filter_attributes = [:encrypted_password, :password, :password_confirmation]
+  config.filter_attributes = %i[encrypted_password password password_confirmation]
 
   # == Localize Date/Time Format
   #
@@ -316,7 +316,7 @@ ActiveAdmin.setup do |config|
   # By default, the footer shows the current Active Admin version. You can
   # override the content of the footer here.
   #
-  config.footer = "© #{Time.now.strftime("%Y")} Copyright: yesuitsolution.com"
+  config.footer = "© #{Time.now.strftime('%Y')} Copyright: yesuitsolution.com"
   # == Sorting
   #
   # By default ActiveAdmin::OrderClause is used for sorting logic

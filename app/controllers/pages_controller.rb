@@ -6,7 +6,9 @@ class PagesController < ApplicationController
     # authenticate_student!
   end
 
-  def admission; end
+  def admission
+    @programs = Program.all
+  end
 
   def documents; end
 
@@ -14,26 +16,11 @@ class PagesController < ApplicationController
 
   def requirement; end
 
-  def profile
-    @address = current_student.student_address
-    @emergency_contact = current_student.emergency_contact
-  end
+  def profile; end
 
   def dashboard
-    @address = current_student.student_address
-    @emergency_contact = current_student.emergency_contact
-    @invoice = Invoice.find_by(student: current_student, semester: current_student.semester, year: current_student.year)
-    @current_academic_calendar = AcademicCalendar.where(admission_type: current_student.admission_type).where(study_level: current_student.study_level).order(created_at: :desc).first
-    @smr = current_student.semester_registrations.where(year: current_student.year,
-                                                        semester: current_student.semester, academic_calendar_id: @current_academic_calendar.id).last
-    @payment_remaining = current_student.semester_registrations.where('remaining_amount > ?', 0).last if @smr.nil?
-
-    @student_grades = StudentGrade.eager_load(:course_registration)
-                                  .where('course_registrations.year=?', current_student.year)
-                                  .where('course_registrations.semester=?', current_student.semester)
-                                  .where(student: current_student).includes(:course)
-
-    # @verified_makeup_exam = MakeupExam.find_by(student_id: current_student.id, verified: true)
+    @invoice = Invoice.find_by(student: current_student)
+    @notifcation = Notification.where(student_id: current_student).order(created_at: :desc).first
   end
 
   def enrollement

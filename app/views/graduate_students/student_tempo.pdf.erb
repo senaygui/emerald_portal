@@ -1,182 +1,163 @@
-<!-- app/views/student_copy/show.pdf.erb -->
-
+<!-- Redesigned certificate to match the provided image style -->
 <style>
-  @page {
-    size: A4;
-    margin: 1in;
-  }
+  @page { size: A4 landscape; margin: 0; }
+  body { font-family: 'Georgia', serif; color: #0a2342; }
 
-  body {
-    font-family: 'Georgia', serif;
+  .frame {
+    /* Exact A4 landscape canvas per request */
+    width: 297mm;  /* A4 width */
+    height: 210mm; /* A4 height */
+    margin: auto;
+    padding: 20mm;
+    border: 5px solid #e0c56f;
     background: #fff;
-    margin: 0;
-    padding: 0;
-    font-size: 28px; /* slightly reduced */
-  }
-
-  .certificate {
-    width: 100%;
-    height: 100%;
     box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  /* .certificate {
-    width: 210mm;
-    height: 297mm;
-    padding: 30mm;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
     position: relative;
-  } */
-
-  .header {
-    text-align: center;
-    margin-bottom: 10px; /* reduced */
+    overflow: hidden; /* keep ribbons inside border */
+    /* Double gold border effect + subtle outer shadow */
+    box-shadow: inset 0 0 0 6px #fff, inset 0 0 0 11px #e0c56f, 0 0 10px rgba(0,0,0,0.15);
   }
 
-  .header h2:first-child {
-    color: #00794d;
-    margin: 0;
-    font-size: 22px;
+  /* Ribbons */
+  .ribbon-top-left {
+    position: absolute; left: 0; top: 12mm; width: 95mm; height: 22mm; z-index: 0;
+    background: linear-gradient(135deg, #0a51b7 0%, #0b3c95 60%, #083070 100%);
+    transform: skewX(-30deg);
+  }
+  .ribbon-top-left::after {
+    content: ''; position: absolute; left: 40mm; top: 16mm; width: 58mm; height: 10mm;
+    background: #f0b310; transform: skewX(-30deg);
+  }
+  .ribbon-bottom-right {
+    position: absolute; right: 0; bottom: 12mm; width: 95mm; height: 18mm; z-index: 0;
+    background: linear-gradient(135deg, #0a51b7 0%, #0b3c95 60%, #083070 100%);
+    transform: skewX(-30deg);
+  }
+  .ribbon-bottom-right::after {
+    content: ''; position: absolute; right: 36mm; bottom: -2mm; width: 58mm; height: 8mm;
+    background: #f0b310; transform: skewX(-30deg);
   }
 
-  .header h1 {
-    color: #002060;
-    margin: 5px 0;
-    font-size: 40px;
+  /* Exact-like top-left layered bands */
+  .top-stripe-blue {
+    position: absolute; left: -50mm; top: -18mm; width: 330mm; height: 54mm; z-index: 0;
+    background: linear-gradient(135deg, #0a51b7 0%, #0b3c95 60%, #083070 100%);
+    transform: skewX(-30deg);
+  }
+  .top-stripe-yellow {
+    position: absolute; left: 40mm; top: 6mm; width: 230mm; height: 18mm; z-index: 0;
+    background: #f0b310; transform: skewX(-30deg);
+  }
+  .top-gold-line {
+    position: absolute; left: 12mm; right: 12mm; top: 34mm; height: 2px; background: #d6b35f; z-index: 0;
   }
 
-  .header h3 {
-    font-size: 26px;
-    font-weight: normal;
-    margin: 10px 0 5px;
-  }
+  /* Title card subtle shadow plate behind logos */
+  .title-card { position: relative; display: inline-block; border-radius: 8mm; padding: 3mm 6mm; background: #fff; box-shadow: 0 8px 16px rgba(0,0,0,0.25); }
 
-  .title {
-    text-decoration: underline;
-    font-weight: bold;
-    font-size: 30px;
-    margin: 8px 0;
-  }
+  /* Bottom-right layered bands */
+  .bottom-stack { position: absolute; right: -30mm; bottom: 4mm; width: 230mm; height: 24mm; transform: skewX(-30deg); z-index: 0; }
+  .bottom-stack .yellow { position: absolute; right: 30mm; bottom: 0; width: 140mm; height: 12mm; background: #f0b310; }
+  .bottom-stack .blue { position: absolute; right: 0; bottom: 4mm; width: 160mm; height: 14mm; background: linear-gradient(135deg, #0a51b7 0%, #0b3c95 60%, #083070 100%); }
+  .bottom-stack .cut { position: absolute; right: -18mm; bottom: 0; width: 36mm; height: 24mm; background: linear-gradient(135deg, #bfc4c8, #8f9499); clip-path: polygon(0 100%, 100% 50%, 100% 100%); }
 
-  .content {
-    text-align: center;
-    line-height: 1.7; /* reduced */
-    margin-top: 10px;
-  }
-  .content-text {
-    font-size: 1.1em !important;
-  }
+  .header { text-align: center; margin-bottom: 6mm; position: relative; z-index: 1; }
+  .brand-row { display: flex; justify-content: center; gap: 8mm; margin-bottom: 2mm; }
+  .brand-row img { height: 18mm; }
+  .logo-badge { display: inline-block; background: #fff; padding: 4mm 6mm; border-radius: 6mm; box-shadow: 0 2px 6px rgba(0,0,0,0.25); margin-bottom: 2mm; }
+  .logo-badge img { height: 14mm; vertical-align: middle; margin: 0 2mm; }
+  .title { font-size: 32pt; color: #0a2f6b; font-weight: 900; text-align: center; margin: 6mm 0 6mm; }
+  /* Title closer to sample weight/size */
+  .title { font-size: 34pt; letter-spacing: .2px; color: #0a2f6b; font-weight: 900; margin: 5mm 0 7mm; }
 
-  .content .student-name,
-  .content .program {
-    font-size: 32px;
-    font-weight: bold;
-    margin: 8px 0;
-    text-decoration: underline;
-  }
+  .student-name { text-align: center; font-size: 18pt; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; margin: 1mm 0 1mm; color: #0a2f6b; }
+  .divider { height: 2px; background: #000; width: 58%; margin: 2mm auto 8mm; }
+  .paragraph { text-align: center; font-size: 12pt; line-height: 1.7; margin: 0 auto 8mm; width: 78%; color: #0a2f6b; }
 
-  .footer {
-    text-align: center;
-    margin-top: 10px;
-  }
+  .label { font-weight: 700; color: #0a2f6b; }
+  .category { width: 90%; margin: 2mm auto; font-size: 11pt; }
+  .category strong { color: #0a2f6b; text-decoration: underline; }
+  .course-list { width: 78%; margin: 2mm auto 10mm; font-size: 11.5pt; }
+  .course-list ul { margin: 3mm 0 0 12mm; padding: 0; }
+  .course-list li { margin: 2.4mm 0; font-weight: 800; font-style: italic; list-style-type: disc; }
+  .course-list li::marker { color: #0a2f6b; }
 
-  .signature {
-    margin-bottom: 10px;
-    font-size: 24px;
-  }
+  .sign-row { width: 90%; margin: 12mm auto 0; display: flex; justify-content: space-between; font-size: 10pt; color: #333; }
+  .sign-col { width: 48%; text-align: center; }
+  .sign-line { border-top: 1px solid #333; margin: 12mm 0 2mm; }
+  .date { text-align: center; margin-top: 6mm; font-size: 10.5pt; position: relative; z-index: 1; color: #666; }
 
-  .motto {
-    color: #007ac1;
-    font-style: italic;
-    font-size: 20px;
-  }
-
-  .contact-banner {
-    background-color:rgba(255, 234, 0, 0.29);
-    border: 1px solidrgba(86, 109, 128, 0.32);
-    padding: 10px 15px;
-    max-width: 700px;
-    margin: 20px auto;
-    font-size: 12px;
-    color: #0d47a1;
-    line-height: 1.3;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  }
-
-    .contact-banner b {
-      color: #1565c0;
-    }
-
-    .contact-banner a {
-      color: #0d47a1;
-      text-decoration: underline;
-    }
-
-    .contact-banner .icon {
-      font-style: normal;
-      margin-right: 4px;
-    }
-
-    .contact-line {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 10px;
-    }
+  /* Small bottom-right gold badge to match sample */
+  .corner-badge { position: absolute; right: 14mm; bottom: 14mm; width: 42mm; height: 9mm; background: #f0b310; border-radius: 2mm; }
 </style>
 
+<%# Data preparation %>
+<% program_name = @graduate_student&.program&.program_name %>
+<% last_attended = @graduate_student&.fully_attended_date || @graduate_student&.updated_at %>
+<% sc = (@graduate_student.respond_to?(:student_courses) ? @graduate_student.student_courses : []) %>
+<% courses = sc.map { |row| row.try(:course_title) }.compact.presence || (
+      (@graduate_student.respond_to?(:courses) ? @graduate_student.courses : []).map { |c| c.try(:course_title) || c.try(:course_name) }.compact
+    ) %>
 
-<div class="certificate">
+<div class="frame">
+  <!-- Top layered decorations -->
+  <div class="top-stripe-blue" aria-hidden="true"></div>
+  <div class="top-stripe-yellow" aria-hidden="true"></div>
+  <div class="top-gold-line" aria-hidden="true"></div>
+
   <div class="header">
-    <%= image_tag wicked_pdf_asset_base64('logo.jpg'), alt: "Hope Enterprise's University College", style: 'max-height: 150px;' %>
-    <h1>Hope Enterprise University College</h1>
-    <h3>OFFICE OF THE REGISTRAR</h3>
-    <div class="contact-banner">
-      <div><b>Hope Enterprise University College</b></div>
-      <div>Lafto Sub-City, Kebele 01, Lebu Campus</div>
-
-      <div class="contact-line">
-        <span class="icon"><i class="fas fa-phone"></i></span>
-        Main Office: +251-118-959786 /
-        Admission: +251-118-959285
-        <span class="icon"><i class="fas fa-fax"></i></span>P.Box: 12382
-      </div>
-
-      <div class="contact-line">
-        <i class="fas fa-globe"></i>Website: <a href="http://www.heuc.edu.et" target="_blank">www.heuc.edu.et</a> |
-        <i class="fas fa-envelope"></i>E-mail: <a href="mailto:info@heuc.edu.et">info@heuc.edu.et</a> |
-        Addis Ababa, Ethiopia
+    <div class="title-card">
+      <div class="logo-badge">
+        <%# Replace with the three small logos if available: e.g., nufart.png, kue.png, aaeb.png %>
+        <%= image_tag wicked_pdf_asset_base64('logo-nuf.jpg'), alt: 'NUF', style: 'height:14mm' rescue nil %>
+        <%#= image_tag wicked_pdf_asset_base64('kue.png'), alt: 'KUE' %>
+        <%#= image_tag wicked_pdf_asset_base64('aaeb.png'), alt: 'AAEB' %>
       </div>
     </div>
-  </div>
-  
-  <div class="content">
-    <h2 class="title">TEMPORARY CERTIFICATE OF GRADUATION</h2>
-    <p class="content-text">This is to certify that</p>
-    <p class="student-name"><%= @graduate_student.full_name %></p>
-
-    <p class="content-text" >Graduated from Hope Enterprise University College</p>
-    <p class="content-text">With</p>
-    <p class="program"><%= @graduate_student.program&.program_name %></p>
-    <p><strong>On <%= @graduate_student.updated_at.strftime('%d %B, %Y') %></strong></p>
-
-    <p class="content-text">This certificate of graduation has been given pending the printing
-       and issuance of actual diploma.</p>
+    <div class="title">Certificate of Innovative Pedagogy</div>
   </div>
 
-  <div class="footer">
-    <div class="signature">
-      _____________________________________________________<br>
-      <strong>Registrar</strong>
+  <div class="student-name"><%= @graduate_student.full_name %></div>
+  <div class="divider"></div>
+
+  <div class="paragraph">
+    <strong>Has successfully</strong> completed a <strong>Six&ndash;Month Innovative Pedagogy Training</strong>,
+    offered by <strong>Kotebe University of Education</strong> (30% Face&ndash;to&ndash;Face) and
+    <strong>Nuf Africa Research and Training Institute</strong> (70% Online Learning).
+  </div>
+
+  <div class="category"><span class="label">Category:</span> <strong><%= program_name %></strong></div>
+
+  <div class="course-list">
+    <div class="label">List of courses completed:</div>
+    <% if courses.present? %>
+      <ul>
+        <% courses.each do |c| %>
+          <li><%= c %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <div>—</div>
+    <% end %>
+  </div>
+
+  <div class="date"><%= last_attended.present? ? last_attended.strftime('%b, %Y') : '' %></div>
+
+  <div class="sign-row">
+    <div class="sign-col">
+      <div class="sign-line"></div>
+      Kotebe University of Education
     </div>
-    <br  />
-    <p class="motto">Developing Leadership for a World of Hope</p>
+    <div class="sign-col">
+      <div class="sign-line"></div>
+      Nuf Africa Research and Training Institute
+    </div>
+  </div>
+  <!-- Bottom layered decorations -->
+  <div class="bottom-stack" aria-hidden="true">
+    <div class="yellow"></div>
+    <div class="blue"></div>
+    <div class="cut"></div>
   </div>
 </div>
 

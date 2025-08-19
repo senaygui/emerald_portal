@@ -50,13 +50,6 @@ ActiveAdmin.register AdminUser do
   scope :recently_added
   scope :total_users
   scope :admins
-  scope :president
-  scope :vice_presidents
-  scope :quality_assurances
-  scope :deans
-  scope :department_heads
-  scope :program_offices
-  scope :library
   scope :registrars
   scope :finances
 

@@ -1,191 +1,120 @@
-<!-- app/views/student_copy/show.pdf.erb -->
-
+<!-- Redesigned certificate to match the provided image style -->
+<% provide(:title, @graduate_student.full_name) %>
 <style>
-  @page {
-    size: A4;
-    margin: 1in;
-  }
+  @page { size: A4; margin: 18mm; }
+  body { font-family: 'Georgia', serif; color: #0a2342; }
 
-  body {
-    font-family: 'Georgia', serif;
-    background: #fff;
-    margin: 0;
-    padding: 0;
-    font-size: 32px;
-  }
-
-  .certificate {
-    width: 100%;
-    min-height: 100vh;
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  /* .certificate {
-    width: 210mm;
-    height: 297mm;
-    padding: 30mm;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
+  .frame {
     position: relative;
-  } */
-
-  .header {
-    height: 25%;
-    text-align: center;
-    margin-bottom: 30px;
+    padding: 22mm 18mm;
+    min-height: 245mm;
+    border: 4px solid #d6b35f; /* gold outer */
+    box-shadow: inset 0 0 0 6px #fff, inset 0 0 0 10px #d6b35f; /* double border */
   }
 
-  .header h2:first-child {
-    color: #00794d;
-    margin: 0;
-    font-size: 25px;
+  /* Ribbons */
+  .ribbon-top-left {
+    position: absolute; left: -12mm; top: 10mm; width: 95mm; height: 22mm;
+    background: linear-gradient(135deg, #0a51b7 0%, #0b3c95 60%, #083070 100%);
+    transform: skewX(-30deg);
+  }
+  .ribbon-top-left::after {
+    content: ''; position: absolute; left: 40mm; top: 16mm; width: 58mm; height: 10mm;
+    background: #f0b310; transform: skewX(-30deg);
+  }
+  .ribbon-bottom-right {
+    position: absolute; right: -12mm; bottom: 10mm; width: 95mm; height: 18mm;
+    background: linear-gradient(135deg, #0a51b7 0%, #0b3c95 60%, #083070 100%);
+    transform: skewX(-30deg);
+  }
+  .ribbon-bottom-right::after {
+    content: ''; position: absolute; right: 36mm; bottom: -6mm; width: 58mm; height: 8mm;
+    background: #f0b310; transform: skewX(-30deg);
   }
 
-  .header h1 {
-    color: #002060;
-    margin: 5px 0;
-    font-size: 52px;
-  }
+  .header { text-align: center; margin-bottom: 6mm; }
+  .brand-row { display: flex; justify-content: center; gap: 8mm; margin-bottom: 2mm; }
+  .brand-row img { height: 18mm; }
+  .logo-badge { display: inline-block; background: #fff; padding: 4mm 6mm; border-radius: 6mm; box-shadow: 0 2px 6px rgba(0,0,0,0.25); margin-bottom: 2mm; }
+  .logo-badge img { height: 14mm; vertical-align: middle; margin: 0 2mm; }
+  .title { font-size: 28pt; color: #0a2f6b; font-weight: 900; text-align: center; margin: 6mm 0 6mm; }
 
-  .header h3 {
-    font-size: 32px;
-    font-weight: normal;
-    margin: 15px 0 5px;
-  }
+  .student-name { text-align: center; font-size: 16pt; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; margin: 2mm 0 0.5mm; }
+  .divider { height: 2px; background: #000; width: 70%; margin: 2mm auto 6mm; }
+  .paragraph { text-align: center; font-size: 11.5pt; line-height: 1.6; margin: 0 auto 6mm; width: 92%; }
 
-  .header .title {
-    text-decoration: underline;
-    font-weight: bold;
-    font-size: 36px;
-    margin: 10px 0;
-  }
+  .label { font-weight: 700; color: #0a2342; }
+  .category { width: 90%; margin: 2mm auto; font-size: 11pt; }
+  .category strong { color: #0a51b7; text-decoration: underline; }
+  .course-list { width: 86%; margin: 2mm auto 8mm; font-size: 11pt; }
+  .course-list ul { margin: 2mm 0 0 10mm; padding: 0; }
+  .course-list li { margin: 2mm 0; font-weight: 800; font-style: italic; list-style-type: disc; }
 
-  .content {
-    text-align: center;
-    line-height: 2.2;
-    margin-top: 30px;
-  }
-  .content-text {
-    font-size: 1.2em !important;
-  }
-
-  .content .student-name {
-    font-size: 40px;
-    font-weight: bold;
-    margin: 10px 0;
-    text-decoration: underline;
-  }
-
-  .content .program {
-    font-weight: bold;
-    text-decoration: underline;
-    font-size: 40px;
-    margin: 10px 0;
-  }
-
-  .footer {
-    text-align: center;
-  }
-
-  .signature {
-    margin-bottom: 20px;
-    font-size: 32px;
-  }
-
-  .motto {
-    color: #007ac1;
-    font-style: italic;
-    font-size: 28px;
-  }
-
-  .contact-banner {
-      background-color: #e3f2fd;
-      border: 1px solid #90caf9;
-      padding: 15px 25px;
-      max-width: 800px;
-      margin: 40px auto;
-      font-size: 14px;
-      color: #0d47a1;
-      line-height: 1.6;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .contact-banner b {
-      color: #1565c0;
-    }
-
-    .contact-banner a {
-      color: #0d47a1;
-      text-decoration: underline;
-    }
-
-    .contact-banner .icon {
-      font-style: normal;
-      margin-right: 4px;
-    }
-
-    .contact-line {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 10px;
-    }
+  .sign-row { width: 90%; margin: 12mm auto 0; display: flex; justify-content: space-between; font-size: 10pt; color: #333; }
+  .sign-col { width: 48%; text-align: center; }
+  .sign-line { border-top: 1px solid #333; margin: 12mm 0 2mm; }
+  .date { text-align: center; margin-top: 2mm; font-size: 10.5pt; }
 </style>
 
+<%# Data preparation %>
+<% program_name = @graduate_student&.program&.program_name %>
+<% last_attended = @graduate_student&.fully_attended_date || @graduate_student&.updated_at %>
+<% sc = (@graduate_student.respond_to?(:student_courses) ? @graduate_student.student_courses : []) %>
+<% courses = sc.map { |row| row.try(:course_title) }.compact.presence || (
+      (@graduate_student.respond_to?(:courses) ? @graduate_student.courses : []).map { |c| c.try(:course_title) || c.try(:course_name) }.compact
+    ) %>
 
-<div class="certificate">
+<div class="frame">
+  <div class="ribbon-top-left"></div>
+  <div class="ribbon-bottom-right"></div>
+
   <div class="header">
-    <%= image_tag wicked_pdf_asset_base64('logo.jpg'), alt: "Hope Enterprise's University College", style: 'max-height: 150px;' %>
-    <h1>Hope Enterprise University College</h1>
-    <h3>OFFICE OF THE REGISTRAR</h3>
-    
-    <br/>
-    
-  </div>
-  
-  <div class="content">
-    <div class="contact-banner">
-      <div><b>Hope Enterprise University College</b></div>
-      <div>Lafto Sub-City, Kebele 01, Lebu Campus</div>
-
-      <div class="contact-line">
-        <span class="icon">📞</span>
-        Main Office: +251-118-959786 /
-        Admission: +251-118-959285
-        <span class="icon">📠</span> 12382
-      </div>
-
-      <div class="contact-line">
-        Website: <a href="http://www.heuc.edu.et" target="_blank">www.heuc.edu.et</a> |
-        E-mail: <a href="mailto:info@heuc.edu.et">info@heuc.edu.et</a> |
-        Addis Ababa, Ethiopia
-      </div>
+    <br><br>
+    <div class="logo-badge">
+      <%# Replace with the three small logos if available: e.g., nufart.png, kue.png, aaeb.png %>
+      
+      <%= image_tag wicked_pdf_asset_base64('logo-nuf.jpg'), alt: 'NUF', style: 'height:14mm' rescue nil %>
+      <%#= image_tag wicked_pdf_asset_base64('kue.png'), alt: 'KUE' %>
+      <%#= image_tag wicked_pdf_asset_base64('aaeb.png'), alt: 'AAEB' %>
     </div>
-    <h2 class="title">TEMPORARY CERTIFICATE OF GRADUATION</h2>
-    <p class="content-text">This is to certify that</p>
-    <p class="student-name"><%= @graduate_student.full_name %></p>
-
-    <p class="content-text" >Graduated from Hope Enterprise University College</p>
-    <p class="content-text">With</p>
-    <p class="program"><%= @graduate_student.program&.program_name %></p>
-    <p><strong>On <%= @graduate_student.updated_at.strftime('%d %B, %Y') %></strong></p>
-
-    <p class="content-text">This certificate of graduation has been given pending the printing
-       and issuance of actual diploma.</p>
+    <div class="title">Certificate of Innovative Pedagogy</div>
   </div>
 
-  <div class="footer">
-    <div class="signature">
-      _____________________________________________________<br>
-      <strong>Registrar</strong>
+  <div class="student-name"><%= @graduate_student.full_name %></div>
+  <div class="divider"></div>
+
+  <div class="paragraph">
+    <strong>Has successfully</strong> completed a <strong>Six‑Month Innovative Pedagogy Training</strong>,
+    offered by <strong>Kotebe University of Education</strong> (30% Face‑to‑Face) and
+    <strong>Nuf Africa Research and Training Institute</strong> (70% Online Learning).
+  </div>
+
+  <div class="category"><span class="label">Category:</span> <strong><%= program_name %></strong></div>
+
+  <div class="course-list">
+    <div class="label">List of course completed:</div>
+    <% if courses.present? %>
+      <ul>
+        <% courses.each do |c| %>
+          <li><%= c %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <div>—</div>
+    <% end %>
+  </div>
+
+  <div class="date"><%= last_attended.present? ? last_attended.strftime('%b, %Y') : '' %></div>
+
+  <div class="sign-row">
+    <div class="sign-col">
+      <div class="sign-line"></div>
+      Kotebe University of Education
     </div>
-    <br  />
-    <p class="motto">Developing Leadership for a World of Hope</p>
+    <div class="sign-col">
+      <div class="sign-line"></div>
+      Nuf Africa Research and Training Institute
+    </div>
   </div>
 </div>
 

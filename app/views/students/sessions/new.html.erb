@@ -1,44 +1,143 @@
 <%provide(:title, "Sign In")%>
-<div class="login-container d-flex">
-  <!-- Left Section -->
-  <div class="left-section text-center text-white d-flex flex-column justify-content-center align-items-center" style="background-color: #4A3AFF; width: 50%; height: 100vh;">
-    <div class="logo mb-4">
-      <%= image_tag 'logo.jpg', alt: 'Akademi Logo', class: 'mb-3', size: '300x170' %>
-      <h1>Hope Enterprise University College</h1>
-    </div>
-    <h2>Welcome back!</h2>
-    <p>Address: Jemo 1 in front of Lebu Medehanialem Church, Addis Ababa</p>
-  </div>
+<div class="container-fluid auth-wrapper min-vh-100 p-0">
+  <div class="row g-0 min-vh-100">
+    <!-- Left: Branding -->
+    <div class="col-lg-7 d-none d-lg-flex align-items-center justify-content-center text-white auth-left position-relative">
+      
+      <div class="text-center px-5">
+        <%= image_tag 'logo-nuf.jpg', alt: 'Nuf Africa Logo', class: 'mb-2 img-fluid brand-logo', size: '420x140' %>
+        <br>
+        <br>
+        <br>
+        <h1 class="fw-bold mb-3 display-6">Empower your learning</h1>
+        <p class="opacity-75 mb-4 lead">Everything you need to learn, teach, and grow — in one secure portal.</p>
 
-  <!-- Right Section -->
-  <div class="right-section d-flex flex-column justify-content-center align-items-center" style="width: 50%; height: 100vh;">
-    <div class="login-box">
-      <%= devise_error_messages! %>
-      <% flash.each do |key, value| %>
-        <div class="flash <%= key %>"><%= value %></div>
-      <% end %>
-      <h2 class="text-center">Sign In</h2>
-      <p class="text-center">Sign in with email and password</p>
-      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-        <div class="form-group">
-          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "Email address" %>
+        <div class="infographic-grid">
+          <div class="info-tile">
+            <i class="fas fa-user-graduate"></i>
+            <div class="info-text">
+              <div class="info-value">10k+</div>
+              <div class="info-label">Active Students</div>
+            </div>
+          </div>
+          <div class="info-tile">
+            <i class="fas fa-book-open"></i>
+            <div class="info-text">
+              <div class="info-value">25+</div>
+              <div class="info-label">Courses</div>
+            </div>
+          </div>
+          <div class="info-tile">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <div class="info-text">
+              <div class="info-value">120+</div>
+              <div class="info-label">Instructors</div>
+            </div>
+          </div>
+          <div class="info-tile">
+            <i class="fas fa-chart-line"></i>
+            <div class="info-text">
+              <div class="info-value">100%</div>
+              <div class="info-label">Success Rate</div>
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <%= f.password_field :password, autocomplete: "current-password", class: "form-control", placeholder: "Password" %>
+      </div>
+      <div class="bg-shape-1"></div>
+      <div class="bg-shape-2"></div>
+    </div>
+
+    <!-- Right: Form -->
+    <div class="col-12 col-lg-5 d-flex align-items-center justify-content-center auth-right py-5 py-lg-0">
+      <div class="card shadow-lg border-0 rounded-4 login-card w-100" style="max-width: 520px;">
+        <div class="card-hero text-center py-4 px-4">
+          
+          <h2 class="h4 mb-0 text-white">Sign in</h2>
+          <p class="text-white-50 mb-0 small">Use your email and password to continue</p>
         </div>
-        <div class="form-group d-flex justify-content-between">
-          <% if devise_mapping.rememberable? %>
-            <div>
-              <%= f.check_box :remember_me %>
-              <%= f.label :remember_me %>
+        <div class="card-body p-4 p-md-5">
+          <% if resource.errors.any? %>
+            <div class="alert alert-danger" role="alert">
+              <strong><%= pluralize(resource.errors.count, 'error') %> prevented sign in:</strong>
+              <ul class="mb-0 mt-2">
+                <% resource.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+                <% end %>
+              </ul>
             </div>
           <% end %>
-          <%= link_to "Forgot your password?", new_password_path(resource_name), class: "text-decoration-none" %>
-        </div>
-        <%= f.submit "Sign In", class: "btn btn-primary btn-block" %>
-      <% end %>
 
-      <p class="text-center mt-3">Don't have an account? <%= link_to "Sign up", admission_path, class: "text-decoration-none" %></p>
+          <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { id: 'login-form' }) do |f| %>
+            <div class="mb-3">
+              <label class="form-label" for="student_email">Email</label>
+              <div class="input-group input-group-lg">
+                <span class="input-group-text bg-light"><i class="fas fa-envelope"></i></span>
+                <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control', placeholder: 'you@example.com', required: true %>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <label class="form-label mb-0" for="student_password">Password</label>
+                <%= link_to 'Forgot password?', new_password_path(resource_name), class: 'small text-decoration-none' %>
+              </div>
+              <div class="input-group input-group-lg password-toggle-group">
+                <span class="input-group-text bg-light"><i class="fas fa-lock"></i></span>
+                <%= f.password_field :password, autocomplete: 'current-password', class: 'form-control', placeholder: 'Your password', required: true, id: 'password-field' %>
+                <button class="btn btn-outline-secondary" type="button" id="toggle-password" aria-label="Show password">
+                  <i class="far fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <% if devise_mapping.rememberable? %>
+                <div class="form-check">
+                  <%= f.check_box :remember_me, class: 'form-check-input', id: 'remember_me' %>
+                  <label class="form-check-label" for="remember_me">Remember me</label>
+                </div>
+              <% end %>
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-brand btn-lg w-100" id="login-submit">
+                <span class="submit-text">Sign in</span>
+                <span class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
+              </button>
+            </div>
+          <% end %>
+
+          <div class="text-center my-3 text-muted">— or —</div>
+          <p class="text-center mb-0">Don't have an account?
+            <%= link_to 'Apply for admission', admission_path, class: 'text-decoration-none fw-semibold', data: { turbo: false, turbolinks: false } %>
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var toggle = document.getElementById('toggle-password');
+    var input = document.getElementById('password-field');
+    if (toggle && input) {
+      toggle.addEventListener('click', function () {
+        var showing = input.getAttribute('type') === 'text';
+        input.setAttribute('type', showing ? 'password' : 'text');
+        this.querySelector('i').classList.toggle('fa-eye');
+        this.querySelector('i').classList.toggle('fa-eye-slash');
+        this.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+      });
+    }
+
+    var form = document.getElementById('login-form');
+    var btn = document.getElementById('login-submit');
+    if (form && btn) {
+      form.addEventListener('submit', function () {
+        btn.disabled = true;
+        btn.querySelector('.spinner-border').classList.remove('d-none');
+      });
+    }
+  });
+  </script>

@@ -1,235 +1,144 @@
-ActiveAdmin.register Invoice, as: "RegistrationPayment" do
-  menu parent: "Student Payments"
-  actions :all, :except => [:new]
-  config.clear_action_items!
-  permit_params :student_full_name,:student_id_number,:student_id, :department_id, :program_id, :academic_calendar_id,:semester_registration_id,:invoice_number,:total_price,:registration_fee,:late_registration_fee,:invoice_status,:last_updated_by,:created_by,:due_date,:semester, :year,payment_transaction_attributes: [:id,:invoice_id,:payment_method_id,:account_holder_fullname,:phone_number,:account_number,:transaction_reference,:finance_approval_status,:last_updated_by,:created_by, :receipt_image], inovice_item_ids: []
+ActiveAdmin.register Invoice do
+  menu parent: 'Billing', priority: 1
   
-  batch_action :approve_invoices do |ids|
-    invoices = Invoice.includes(:payment_transaction).where(id: ids)
+  # Permitted parameters
+  permit_params :student_id, :program_id, :batch_id, :student_full_name, :student_id_number,
+                :invoice_number, :total_price, :registration_fee, :late_registration_fee,
+                :invoice_status, :last_updated_by, :created_by, :due_date,
+                payment_transaction_attributes: %i[id finance_approval_status payment_method_id account_holder_fullname 
+                phone_number account_number transaction_reference receipt_image _destroy]
 
-    invoices.each do |invoice|
-      invoice.update(invoice_status: 'approved')
-      
-      if invoice.payment_transaction.present?
-        invoice.payment_transaction.update(finance_approval_status: 'approved')
-      end
-    end
-
-    redirect_to collection_path, alert: "The selected invoices have been approved."
-  end
-
-  batch_action :deny_invoices do |ids|
-    invoices = Invoice.includes(:payment_transaction).where(id: ids)
-
-    invoices.each do |invoice|
-      invoice.update(invoice_status: 'denied')
-
-      if invoice.payment_transaction.present?
-        invoice.payment_transaction.update(finance_approval_status: 'denied')
-      end
-    end
-
-    redirect_to collection_path, alert: "The selected invoices have been denied."
-  end
-
-  member_action :download_pdf, method: :get do
-    invoice = Invoice.find(params[:id])
-    pdf = InvoicePdfGenerator.new(invoice).render
-    send_data pdf, filename: "invoice_#{invoice.invoice_number}.pdf", type: 'application/pdf', disposition: 'inline'
-  end
-
-  action_item :download_pdf, only: :show do
-    link_to 'Print Invoice', download_pdf_admin_registration_payment_path(registration_payment), target: '_blank'
-  end
-
-
-  # batch_action "Approve invoice status for", method: :put, confirm: "Are you sure?" do |ids|
-  #   invoices = Invoice.where(id: ids)
-  ##   invoices.update_all(invoice_status: "approved")
-  #  
-  ## end
-  #controller do
-  #  after_action :testmoodle, only: [:update]
-#
-  #  def testmoodle
-  #    if @registration_payment.payment_transaction.finance_approval_status == "approved"
-  #      @moodle = MoodleRb.new('c9687c85baec73e85ad30c281c25e229', 'https://lms.ngvc.edu.et/webservice/rest/server.php')
-  #      if !(@moodle.users.search(email: "#{@registration_payment.student.email}").present?)
-  #        student = @moodle.users.create(
-  #            :username => "#{@registration_payment.student.student_id.downcase}",
-  #            :password => "#{@registration_payment.student.student_password}",
-  #            :firstname => "#{@registration_payment.student.first_name}",
-  #            :lastname => "#{@registration_payment.student.last_name}",
-  #            :email => "#{@registration_payment.student.email}"
-  #          )
-  #        lms_student = @moodle.users.search(email: "#{@registration_payment.student.email}")
-  #        @user = lms_student[0]["id"]
-  #        @registration_payment.semester_registration.course_registrations.each do |c|
-  #          s = @moodle.courses.search("#{c.course.course_code}")
-  #          @course = s["courses"].to_a[0]["id"]
-  #          @moodle.enrolments.create(
-  #            :user_id => "#{@user}",
-  #            :course_id => "#{@course}"
-  #          )
-  #        end
-  #      end
-  #    end
-  #  end
-  #end  
-  #
-  index do
-    selectable_column
-    # column "Invoice NO",:invoice_number
-    column "Student" do |s|
-      s.student.name.full
-    end
-    column "ID" do |s|
-      s.student.student_id
-    end
-    column "Program", sortable: true do |n|
-      n.program.program_name
-    end
-    column "Admission Type", sortable: true do |n|
-      n.semester_registration.admission_type 
-    end
-    column "Study Level", sortable: true do |n|
-      n.semester_registration.study_level 
-    end
-    column :invoice_status do |s|
-      status_tag s.invoice_status
-    end
-    number_column :total_price, as: :currency, unit: "ETB",  format: "%n %u" ,delimiter: ",", precision: 2
-    #number_column :registration_fee, as: :currency, unit: "ETB",  format: "%n %u" ,delimiter: ",", precision: 2
-    column "Academic Year", sortable: true do |n|
-      link_to n.academic_calendar.calender_year, admin_academic_calendar_path(n.academic_calendar)
-    end
-    column :semester
-    column :year
-    
-    # column :mode_of_payment
-    column "Created At", sortable: true do |c|
-      c.created_at.strftime("%b %d, %Y")
-    end
-    actions
-  end
-  filter :student_full_name
-  filter :student_id_number
-  filter :department_id, as: :search_select_filter, url: proc { admin_departments_path },
-         fields: [:department_name, :id], display_name: 'department_name', minimum_input_length: 2,
-         order_by: 'id_asc'
-  filter :program_id, as: :search_select_filter, url: proc { admin_programs_path },fields: [:program_name, :id], display_name: 'program_name', minimum_input_length: 2,order_by: 'id_asc'
-  filter :academic_calendar_id, as: :search_select_filter, url: proc { admin_academic_calendars_path },
-         fields: [:calender_year, :id], display_name: 'calender_year', minimum_input_length: 2,
-         order_by: 'id_asc'
-  filter :year
-  filter :semester
-  filter :invoice_number
-  filter :total_price
-  filter :registration_fee
-  filter :late_registration_fee
-  filter :invoice_status
-  filter :due_date
-  filter :last_updated_by
-  filter :created_by
-  filter :created_at
-  filter :updated_at
-
-  scope :recently_added
+  # Scopes
+  scope :all, default: true
+  scope :unpaid
   scope :pending
   scope :approved
   scope :denied
   scope :incomplete
-  scope :unpaid
   scope :due_date_passed
-  # scope :undergraduate
-  # scope :graduate
-  # scope :online
-  # scope :regular
-  # scope :extention
-  # scope :distance
+  scope :recently_added
 
-  form :title => proc{|invoice| "Invoice NO ##{invoice.invoice_number}" } do |f|
-    f.semantic_errors
-    f.inputs 'payment transaction', for: [:payment_transaction, f.object.payment_transaction || PaymentTransaction.new] do |a|
-      ## TODO: find way to hide the payment_transaction form if student fill it them self
-      if params[:page_name] == "payment_transaction"
-        a.input :payment_method_id, as: :search_select, url: admin_payment_methods_path,
-            fields: [:bank_name, :id], display_name: 'bank_name', minimum_input_length: 2,
-            order_by: 'id_asc'
-        a.input :account_holder_fullname
-        a.input :phone_number
-        a.input :account_number
-        a.input :transaction_reference
-        a.input :receipt_image, as: :file
-      end
-      a.input :finance_approval_status, as: :select, :collection => ["pending", "approved", "re-submit", "denied", "under submitted"], :include_blank => false
-      if a.object.new_record?
-        a.input :created_by, as: :hidden, :input_html => { :value => current_admin_user.name.full}
-      else
-        a.input :last_updated_by, as: :hidden, :input_html => { :value => current_admin_user.name.full}
-      end 
+  # Filters
+  filter :invoice_number
+  filter :student_full_name_cont, as: :string, label: 'Student Name'
+  filter :student_id_number_cont, as: :string, label: 'Student ID'
+  filter :program, as: :select, collection: -> { Program.all.map { |p| [p.program_name, p.id] } }
+  filter :batch, as: :select, collection: -> { Batch.all.map { |b| [b.batch_title, b.id] } }
+  filter :invoice_status, as: :select, collection: ['unpaid', 'pending', 'approved', 'denied', 'incomplete']
+  filter :due_date
+  filter :created_at
+  filter :updated_at
+
+  # Batch actions
+  # batch_action :approve do |ids|
+  #   batch_action_collection.find(ids).each do |invoice|
+  #     invoice.update(invoice_status: 'approved')
+  #     invoice.payment_transaction&.update(finance_approval_status: 'approved')
+  #   end
+  #   redirect_to collection_path, notice: "#{ids.size} invoices approved"
+  # end
+
+  # batch_action :deny do |ids|
+  #   batch_action_collection.find(ids).each do |invoice|
+  #     invoice.update(invoice_status: 'denied')
+  #     invoice.payment_transaction&.update(finance_approval_status: 'denied')
+  #   end
+  #   redirect_to collection_path, notice: "#{ids.size} invoices denied"
+  # end
+
+  index do
+    selectable_column
+    # column "Invoice NO",:invoice_number
+    column "Invoice #", :invoice_number, sortable: :invoice_number do |invoice|
+      link_to invoice.invoice_number, admin_invoice_path(invoice)
     end
-    f.inputs "invoice status" do
-      f.input :invoice_status, as: :select, :collection => ["pending", "approved", "re-submit", "denied", "under submitted"], :include_blank => false
-      if f.object.new_record?
-        f.input :created_by, as: :hidden, :input_html => { :value => current_admin_user.name.full}
-      else
-        f.input :last_updated_by, as: :hidden, :input_html => { :value => current_admin_user.name.full}
-      end
+    column :student_full_name
+    column :student_id_number
+    column :program do |m|
+      link_to m.program.program_name, [:admin, m.program] if m.program
     end
+    column :batch do |m|
+      link_to m.batch.batch_title, [:admin, m.batch] if m.batch
+    end
+    column :invoice_status do |s|
+      status_tag s.invoice_status
+    end
+    number_column :total_price, as: :currency, unit: 'ETB', format: '%n %u', delimiter: ',', precision: 2
+    column :due_date
+    column 'Created At', sortable: true do |c|
+      c.created_at.strftime('%b %d, %Y')
+    end
+    actions
+  end
+
+
+  action_item :approve, only: :show, if: proc { resource.invoice_status != 'approved' } do
+    link_to 'Approve Invoice', approve_admin_invoice_path(resource), method: :put, data: { confirm: 'Are you sure you want to approve this invoice?' }, class: 'btn btn-success'
+  end
+
+  member_action :approve, method: :put do
+    resource.payment_transaction&.update(finance_approval_status: 'approved')
     
-    # f.actions
-    f.actions do 
-      f.action :submit, as: :button, label: 'Submit'
-      li class: "cancel" do
-        link_to 'Cancel', :back
-      end
-    end
-     
+    resource.update(invoice_status: 'approved')
+    course_registration = resource.invoice_items.first.course_registration
+    course_registration.update(enrollment_status: 'enrolled')
+    course_registration.add_grade
+    testmoodle
+    Notification.create!(
+            student_id: resource.student_id,
+            notifiable: resource,
+            notification_status: 'success',
+            notification_message: "Thank you for your payment! Your invoice has been approved. You can now access the LMS using the username and password provided below and learn",
+            notification_card_color: "success",
+            notification_action: "approved"
+        )
+    redirect_to resource_path, notice: 'Invoice approved.'
+  end
+  action_item :deny, only: :show, if: proc { resource.invoice_status != 'denied' } do
+  link_to 'Deny Invoice', deny_admin_invoice_path(resource), method: :put, data: { confirm: 'Are you sure you want to deny this invoice?' }, class: 'btn btn-danger'
   end
 
-  action_item :edit, only: :show, priority: 1  do
-    if ((current_admin_user.role == "admin") || (current_admin_user.role == "finance head")) && !(registration_payment.payment_transaction.present?)
-      link_to 'Add Payment Information', edit_admin_registration_payment_path(registration_payment.id, page_name: "payment_transaction")
-    elsif ((current_admin_user.role == "admin") || (current_admin_user.role == "finance head")) && (registration_payment.payment_transaction.present?) && !(registration_payment.created_by == "self")
-      link_to 'Edit Payment Information', edit_admin_registration_payment_path(registration_payment.id, page_name: "payment_transaction")  
-    end 
+  member_action :deny, method: :put do
+    resource.update(invoice_status: 'denied')
+    resource.payment_transaction&.update(finance_approval_status: 'denied')
+    Notification.create!(
+            student_id: resource.student_id,
+            notifiable: resource,
+            notification_status: 'danger',
+            notification_message: "your payment inovice is not approved please transfer to our account and re-submit the slip",
+            notification_card_color: "danger",
+            notification_action: "pay"
+        )
+    redirect_to resource_path, notice: 'Invoice denied.'
   end
-
-  action_item :delete, only: :show, priority: 1  do
-    if (current_admin_user.role == "admin") || (current_admin_user.role == "finance head")
-      link_to "Delete Invoice", admin_registration_payment_path(registration_payment), method: :delete, 'data-confirm': 'Invoice will be deleted forever. Are You Sure?' 
-    end 
-  end
-  action_item :delete, only: :show, priority: 1  do
-    if (current_admin_user.role == "admin") || (current_admin_user.role == "finance head")
-      link_to "Approve Invoice", edit_admin_registration_payment_path(registration_payment) 
-    end 
-  end
-
-
-  show :title => proc{|invoice| "Invoice NO ##{invoice.invoice_number}" } do
-    
+  # Show page
+  show title: proc { |invoice| "Invoice ##{invoice.invoice_number}" } do
     columns do
       column do
-        panel "invoice summery" do
-          attributes_table_for registration_payment do
+        panel 'Invoice Details' do
+          attributes_table_for invoice do
             row :invoice_number
-            row "registration academic year" do |s|
-              link_to s.semester_registration.academic_calendar.calender_year, admin_semester_registration_path(s.semester_registration.id)
+            row :student_full_name
+            row :student_id_number
+            row :program do |m|
+              link_to m.program.program_name, [:admin, m.program]
             end
+            row :batch do |m|
+              link_to m.batch.batch_title, [:admin, m.batch]
+            end
+            row :total_price do
+              number_to_currency(invoice.total_price, unit: 'ETB ')
+            end
+            # row :registration_fee do
+            #   number_to_currency(invoice.registration_fee, unit: 'ETB ')
+            # end
+            # row :late_registration_fee do
+            #   number_to_currency(invoice.late_registration_fee, unit: 'ETB ')
+            # end
             row :invoice_status do |s|
               status_tag s.invoice_status
             end
-            
-            row "payment mode", sortable: true do |n|
-              n.semester_registration.mode_of_payment
-            end
-            row :due_date if registration_payment.due_date.present?
-            number_row :registration_fee, as: :currency, unit: "ETB",  format: "%n %u" ,delimiter: ",", precision: 2 if registration_payment.registration_fee > 0
-            number_row :late_registration_fee, as: :currency, unit: "ETB",  format: "%n %u" ,delimiter: ",", precision: 2 if registration_payment.late_registration_fee > 0 
-            number_row :total_price, as: :currency, unit: "ETB",  format: "%n %u" ,delimiter: ",", precision: 2
-            
+            row :due_date
             row :created_by
             row :last_updated_by
             row :created_at
@@ -237,93 +146,99 @@ ActiveAdmin.register Invoice, as: "RegistrationPayment" do
           end
         end
       end
+
       column do
-        panel "Sender Information" do
-          attributes_table_for registration_payment.payment_transaction do
-            row "account name" do |a|
-              a.account_holder_fullname
-            end 
-            row :account_number 
-            row :phone_number 
-            row "payment method" do |pr|
-              link_to pr.payment_method.bank_name, admin_payment_method_path(pr.payment_method.id)
-            end
-            # row "payment type" do |pr|
-            #   pr.payment_method.payment_method_type
-            # end
-            row "reference no." do |pr|
-              pr.transaction_reference
-            end
-            row "attachement" do |pr|
-              if pr.receipt_image.attached?
-                link_to "attachement", rails_blob_path(pr.receipt_image, disposition: 'preview')
-              else
-                "No attachment available"
+        panel 'Payment Transaction' do
+          if invoice.payment_transaction.present?
+            attributes_table_for invoice.payment_transaction do
+              row :payment_method do |m|
+                link_to m.payment_method.bank_name, [:admin, m.payment_method]
+              end
+              row :account_holder_fullname
+              row :phone_number
+              row :account_number
+              row :transaction_reference
+              row :receipt_image do |pt|
+                if pt.receipt_image.attached?
+                  link_to 'View Receipt', rails_blob_path(pt.receipt_image, disposition: 'inline'), target: '_blank'
+                else
+                  'No receipt attached'
+                end
+              end
+              row :finance_approval_status do |pt|
+                status_tag pt.finance_approval_status
               end
             end
-            
-            row "finance approval" do |s|
-              status_tag s.finance_approval_status
-            end
-            row :created_by
-            row :last_updated_by
-            row :created_at
-            row :updated_at
+          else
+            'No payment transaction recorded.'
           end
         end
-      end
-      column do
-        panel "Student Information" do
-          attributes_table_for registration_payment.semester_registration do
-            row "Student name", sortable: true do |n|
-              n.student.name.full 
+
+        panel 'Invoice Items' do
+          if invoice.invoice_items.any?
+            table_for invoice.invoice_items do
+              column :course do |item|
+                link_to item.course_registration.course_title, admin_course_path(item.course_registration.course)
+              end
+              column :price do |item|
+                number_to_currency(item.price, unit: 'ETB ')
+              end
+              column :created_at
             end
-            row "student ID" do |s|
-              s.student.student_id
-            end
-            row "Prorgam", sortable: true do |d|
-              link_to d.student.program.program_name, [:admin, d.student.program]
-            end
-            row "admission type", sortable: true do |n|
-              n.admission_type 
-            end
-            row "study level", sortable: true do |n|
-              n.study_level 
-            end
-            row "year", sortable: true do |n|
-              n.year 
-            end
-            row "semester", sortable: true do |n|
-              n.student.semester 
-            end
+          else
+            'No items found for this invoice.'
           end
         end
       end
     end
+  end
 
-   # columns do
-   #   column do
-   #     panel "Invoice Item Information" do
-   #       table_for registration_payment.invoice_items do
-   #         column "Course title" do |pr|
-   #           link_to pr.course_registration.course.course_title, admin_course_path(pr.course_registration.course.id)
-   #         end
-   #         column "Course code" do |pr|
-   #           pr.course_registration.course.course_code
-   #         end
-   #         column "Course module" do |pr|
-   #           link_to pr.course_registration.course.course_module.module_code, admin_course_module_path(pr.course_registration.course.course_module.id) 
-   #         end
-   #         column "Credit hour" do |pr|
-   #           pr.course_registration.course.credit_hour
-   #         end
-   #         number_column :price, as: :currency, unit: "ETB",  format: "%n %u" ,delimiter: ",", precision: 2
-   #       end
-   #     end
-   #   end
-   # end
-    
-    
-  end 
-  
+  # Form
+  form do |f|
+    f.semantic_errors
+    if !f.object.new_record?
+      f.inputs 'Invoice Information' do
+        f.input :invoice_status, as: :select, collection: ['approved', 'denied']
+        f.input :last_updated_by, input_html: { value: current_admin_user.name }, as: :hidden
+      end
+    end
+    if !f.object.new_record?
+      f.inputs 'Payment Transaction', for: [:payment_transaction, f.object.payment_transaction || f.object.build_payment_transaction] do |pt|
+        pt.input :finance_approval_status, as: :select, collection: %w[pending approved denied]
+      end
+    end
+
+    f.actions
+  end
+
+  # Controller
+  controller do
+    def testmoodle
+      if @invoice.invoice_status == 'approved'
+        @moodle = MoodleRb.new('ebf389740b514fdfa03fc804d767f127', 'https://www.nuf.edu.et/webservice/rest/server.php')
+        unless @moodle.users.search(email: "#{@invoice.student.email}").present?
+          student = @moodle.users.create(
+              username: "#{@invoice.student.student_id.downcase}",
+              password: "#{@invoice.student.student_password}",
+              firstname: "#{@invoice.student.first_name}",
+              lastname: "#{@invoice.student.last_name}",
+              email: "#{@invoice.student.email}"
+            )
+          lms_student = @moodle.users.search(email: "#{@invoice.student.email}")
+          @user = lms_student[0]['id']
+          @invoice.student.course_registrations.each do |c|
+            s = @moodle.courses.search("#{c.course.course_code}")
+            @course = s['courses'].to_a[0]['id']
+            @moodle.enrolments.create(
+              user_id: "#{@user}",
+              course_id: "#{@course}"
+            )
+          end
+        end
+      end
+    end
+    def scoped_collection
+      super.includes(:program, :batch, :payment_transaction)
+    end
+  end
 end

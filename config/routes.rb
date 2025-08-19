@@ -182,6 +182,7 @@ Rails.application.routes.draw do
   resources :class_schedules, only: [:index]
   # resources :class_schedules, only: [:index]
   resources :exam_schedules, only: %i[index new create edit update]
+  resources :exam_schedule_with_files, only: %i[index show]
 
   resources :readmissions, only: %i[index new create] do
     member do
@@ -203,7 +204,11 @@ Rails.application.routes.draw do
   # post 'student_copy/generate_student_copy', as: 'generate_student_copy'
 
   resources :student_copy
-
+  resources :course_registrations do
+    collection do
+      post :enroll # or post, depending on what you're doing
+    end
+  end
   get 'new/semester/registration', to: 'pages#enrollement', as: 'enrollement'
   get 'added/course/registration', to: 'pages#add_enrollement', as: 'add_enrollement'
   post 'added/course/registration', to: 'pages#add_enrollement'
@@ -271,6 +276,7 @@ Rails.application.routes.draw do
   get 'requirements' => 'pages#requirement'
   get 'home' => 'pages#home'
   resources :almunis
+  resources :class_schedule_with_files
   resources :semester_registrations
   resources :invoices
   resources :profiles

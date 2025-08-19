@@ -3,12 +3,11 @@ class InvoicesController < ApplicationController
 
   # GET /invoices or /invoices.json
   def index
-    @semesters = current_student.semester_registrations.all.includes(:invoices)
+    @invoices = current_student.invoices.all.order(created_at: :desc)
   end
 
   # GET /invoices/1 or /invoices/1.json
   def show
-    @out_of_batch = @invoice.semester_registration.out_of_batch?
     @invoice = Invoice.find(params[:id])
 
     respond_to do |format|
@@ -62,28 +61,6 @@ class InvoicesController < ApplicationController
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @invoice.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # PATCH/PUT /invoices/1 or /invoices/1.json
-  def update
-    respond_to do |format|
-      if @invoice.update(invoice_params)
-        format.html { redirect_to @invoice, notice: "Invoice was successfully updated." }
-        format.json { render :show, status: :ok, location:  }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @invoice.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /invoices/1 or /invoices/1.json
-  def destroy
-    @invoice.destroy
-    respond_to do |format|
-      format.html { redirect_to invoices_url, notice: "Invoice was successfully destroyed." }
-      format.json { head :no_content }
     end
   end
 

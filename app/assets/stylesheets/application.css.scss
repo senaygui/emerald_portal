@@ -219,3 +219,237 @@ p.declaration {
   outline: none;
   box-shadow: 0 0 0 0.1rem #b6cef7;
 }
+
+ /* ===== Auth/Login Page Enhancements ===== */
+ :root {
+  /* Logo-derived palette: navy, teal, orange */
+  --brand-1: #0d2a45; /* navy */
+  --brand-2: #0b6d7a; /* teal */
+  --brand-3: #f39c12; /* orange accent */
+ }
+  .auth-wrapper {
+    background: #f5f7fb;
+  }
+
+  .auth-left {
+    background: linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 55%, rgba(243,156,18,0.65) 110%);
+    position: relative;
+    overflow: hidden;
+  }
+  .auth-left > .text-center { /* content container */
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+  }
+
+ /* Decorative shapes */
+ .auth-left .bg-shape-1,
+ .auth-left .bg-shape-2 {
+   position: absolute;
+   border-radius: 50%;
+   filter: blur(40px);
+   opacity: 0.3;
+   z-index: 0;
+ }
+
+ .auth-left .bg-shape-1 {
+   width: 320px;
+   height: 320px;
+   background: #ffffff;
+   top: 10%;
+   right: -120px;
+   animation: float 8s ease-in-out infinite;
+ }
+
+ .auth-left .bg-shape-2 {
+   width: 260px;
+   height: 260px;
+   background: #00e5ff;
+   bottom: -80px;
+   left: -80px;
+   animation: float 10s ease-in-out infinite reverse;
+ }
+
+ @keyframes float {
+   0% { transform: translateY(0); }
+   50% { transform: translateY(-12px); }
+   100% { transform: translateY(0); }
+ }
+
+  .login-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-top: 4px solid var(--brand-3);
+    border-radius: 1rem;
+  }
+  .login-card .card-hero {
+    background: linear-gradient(135deg, var(--brand-1), var(--brand-2));
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+  }
+  .login-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 1rem 2rem rgba(0,0,0,0.12);
+  }
+  .login-card .card-body {
+    padding: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+ /* Softer input corners inside card */
+ .login-card .input-group .form-control,
+ .login-card .input-group .input-group-text,
+ .login-card .input-group .btn {
+   border-radius: .6rem;
+ }
+ 
+ /* Bigger, crisper logo */
+ .brand-logo {
+   max-width: 520px;
+   width: 100%;
+   height: auto;
+   filter: drop-shadow(0 6px 16px rgba(0,0,0,.25));
+ }
+ @media (max-width: 1400px) {
+   .brand-logo { max-width: 460px; }
+ }
+ @media (max-width: 1200px) {
+   .brand-logo { max-width: 420px; }
+ }
+
+  .password-toggle-group .btn {
+    border-color: #e6e9f2;
+  }
+  .password-toggle-group .btn:active,
+  .password-toggle-group .btn:focus {
+    box-shadow: none;
+  }
+
+/* Brand button */
+.btn-brand {
+  color: #0b1b2e;
+  background: linear-gradient(135deg, var(--brand-3) 0%, #ffd37a 100%);
+  border: 0;
+}
+.btn-brand:hover {
+  filter: brightness(0.98);
+  box-shadow: 0 .75rem 1.25rem rgba(243,156,18,.25);
+}
+.btn-brand:disabled { opacity: .8; }
+
+/* Branded header for cards (used on registration card title) */
+.brand-header {
+  background: linear-gradient(135deg, var(--brand-1), var(--brand-2));
+  color: #fff;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+.brand-header .card-title {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin: 0;
+}
+.brand-header .card-title i { opacity: .9; }
+
+/* Fixed submit bar: keep always visible and non-fading */
+.fixed-submit {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100vw;
+  z-index: 1100;
+  background: rgba(255,255,255,0.98);
+  box-shadow: 0 -6px 24px rgba(0,0,0,0.06);
+  padding: 16px 24px;
+}
+.fixed-submit .btn:disabled,
+.fixed-submit .btn.disabled,
+.fixed-submit .btn[disabled] {
+  opacity: 1 !important; /* do not dim the button when disabled */
+}
+
+/* Add bottom padding so content isn't hidden behind fixed-submit */
+.has-fixed-submit {
+  padding-bottom: 96px;
+}
+
+  /* Improve input focus */
+  .input-group .form-control:focus {
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05), 0 0 0 .2rem rgba(74, 58, 255, .15);
+    border-color: #b6b9ff;
+  }
+
+ 
+ /* Larger, clearer feature badges */
+ .feature-badges {
+gap: 0.75rem !important;
+}
+ .feature-badges .badge-pill {
+display: inline-flex;
+align-items: center;
+color: #ffffff;
+background: rgba(255,255,255,0.18);
+border: 1px solid rgba(255,255,255,0.35);
+border-radius: 999px;
+padding: 0.7rem 1.05rem;
+font-weight: 600;
+font-size: 1.1rem;
+letter-spacing: 0.1px;
+}
+
+ /* Infographic tiles (left panel) */
+ .infographic-grid {
+display: grid;
+grid-template-columns: repeat(2, minmax(200px, 1fr));
+gap: 1rem 1.25rem;
+margin-inline: auto;
+max-width: 720px;
+}
+.info-tile {
+display: flex;
+align-items: center;
+gap: 0.9rem;
+background: rgba(255,255,255,0.12);
+border: 1px solid rgba(255,255,255,0.28);
+border-radius: 1rem;
+padding: 1rem 1.1rem;
+backdrop-filter: blur(4px);
+transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.info-tile:hover {
+transform: translateY(-3px);
+box-shadow: 0 12px 24px rgba(0,0,0,.15);
+background: rgba(255,255,255,0.16);
+}
+.info-tile i {
+font-size: 1.75rem;
+width: 2.25rem;
+text-align: center;
+color: #fff;
+text-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+.info-text .info-value {
+font-weight: 800;
+font-size: 1.4rem;
+line-height: 1.1;
+color: #ffffff;
+}
+.info-text .info-label {
+font-weight: 500;
+font-size: 0.95rem;
+opacity: 0.85;
+color: #eaf4ff;
+}
+@media (max-width: 1200px) {
+.infographic-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 992px) {
+.infographic-grid { grid-template-columns: 1fr; max-width: 520px; }
+}
+
+ /* Card header logo spacing */
+ .login-card .brand-logo { margin-top: -0.25rem; margin-bottom: .5rem; }
+
+ /* Responsive tweaks */
+ @media (max-width: 991.98px) {
+.auth-right { padding: 2rem 1rem; }
+}

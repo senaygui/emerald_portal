@@ -1,4 +1,5 @@
 class GraduateStudentsController < ApplicationController
+  
   def student_tempo
     @graduate_student = Student.find(params[:id])
     respond_to do |format|

@@ -27,7 +27,6 @@ class DeviseCreateAdminUsers < ActiveRecord::Migration[5.2]
       t.string :middle_name
       t.string :role, index: true, null: false, :default => "admin"
       t.string :username, :unique =>  true 
-      t.belongs_to :department, index: true, type: :uuid
       ## Confirmable
       # t.string   :confirmation_token
       # t.datetime :confirmed_at

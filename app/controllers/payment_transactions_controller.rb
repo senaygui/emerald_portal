@@ -32,6 +32,14 @@ class PaymentTransactionsController < ApplicationController
 
     respond_to do |format|
       if @payment_transaction.save
+        Notification.create!(
+            student_id: current_student.id,
+            notifiable: @payment_transaction,
+            notification_status: 'pending',
+            notification_message: "Thank you for your submission. Please wait until the Finance Officer approves your payment.",
+            notification_card_color: "primary",
+            notification_action: "pending"
+        )
         format.html do
           if @payment_transaction.invoiceable_type == 'Invoice'
             redirect_to invoice_path(@payment_transaction.invoiceable),

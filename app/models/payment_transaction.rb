@@ -8,10 +8,12 @@ class PaymentTransaction < ApplicationRecord
     belongs_to :invoiceable, polymorphic: true
   	belongs_to :payment_method
   	has_one_attached :receipt_image
+		has_many :notifications, as: :notifiable, dependent: :destroy
   	
-
+	
   private
-		def set_invoice_status
+
+	  def set_invoice_status
 	  	self.invoiceable.update_columns(invoice_status: "pending")
 	  end
 end

@@ -4,8 +4,8 @@ class DeviseCreateStudents < ActiveRecord::Migration[5.2]
   def change
     create_table :students, id: :uuid do |t|
       ## Database authenticatable
-      t.string :email,              null: false, default: ""
-      t.string :encrypted_password, null: false, default: ""
+      t.string :email,              null: false, default: ''
+      t.string :encrypted_password, null: false, default: ''
 
       ## Recoverable
       t.string   :reset_password_token
@@ -39,49 +39,30 @@ class DeviseCreateStudents < ActiveRecord::Migration[5.2]
       t.string :gender, null: false
       t.datetime :date_of_birth, null: false
       t.string :place_of_birth
-      t.string :marital_status
-      t.string :nationality, null: false
-      t.string :current_occupation
-      # t.string :employment_status
-      # t.string :organization_name
-      # t.string :organization_address
-      # t.string :organization_phone_number
-      # t.string :organization_email
 
       ## student unique credentials
-      t.string :student_id, :unique =>  true
-      t.string :old_id_number
+      t.string :student_id, unique: true
       t.string :student_password
-      t.boolean :student_id_taken_status, default: false
 
       ## stident admission information
       t.belongs_to :program, index: true, type: :uuid
-      t.belongs_to :department, index: true, type: :uuid
-      t.belongs_to :academic_calendar, index: true, type: :uuid
-      t.string :admission_type, null: false
-      t.string :study_level, null: false
-      t.integer :year, default: 1
-      t.integer :semester, default: 1
-      t.string :account_verification_status, default: "pending"
-      t.string :document_verification_status, default: "pending"
-      t.boolean :tempo_status, default: false
-      t.string :curriculum_version
-      t.string :entrance_exam_result_status
-      t.string :batch
-       
-      ## account status
-      t.string :account_status, default: "active"
-      t.string :graduation_status
-      t.string :sponsorship_status
-      
-      ## transfer student status
-      t.string :institution_transfer_status
-      t.string :program_transfer_status
-      t.string :previous_program
-      t.string :previous_department
+      t.belongs_to :batch, index: true, type: :uuid
 
-      ##created and updated by
-      t.string :created_by, default: "self"
+      ## account status
+      t.string :account_status, default: 'active'
+      t.string :graduation_status
+      t.string :fully_attended, default: 'pending'
+      t.datetime :fully_attended_date
+      t.string :sponsorship_status
+
+      ## address
+      t.string :moblie_number, null: false
+      t.string :alternative_moblie_number
+      t.string :city
+      t.string :country, null: false, default: 'ET'
+      t.string :region
+      # #created and updated by
+      t.string :created_by, default: 'self'
       t.string :last_updated_by
       t.timestamps null: false
     end
