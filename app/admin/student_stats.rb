@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register_page 'StudentStats' do
-  menu parent: 'student managment', priority: 11, label: 'Student Report'
+  menu parent: 'Student Management', priority: 1, label: 'Student Report'
   breadcrumb do
     ['Student ', 'Report']
   end

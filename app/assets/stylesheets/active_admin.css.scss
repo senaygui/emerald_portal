@@ -22,12 +22,12 @@
 //
 //   .status_tag { background: #6090DB; }
 // @import "active_admin_flat_skin";
-$skinMainFirstColor: #024d71 !default;
-$skinMainSecondColor: #168C40 !default;
+$skinMainFirstColor: #0a375a !default;
+$skinMainSecondColor: #fe9903 !default;
 $menu-arrow-dark-icon-url: 'active_admin/nested_menu_arrow_dark.gif' !default;
 @import "wigu/active_admin_theme";
 // $panelBorder: #42558C;
-// $skinActiveColor: #038C3E;
+// $skinActiveColor: #0a375b;
 // $bodyColor: rgba(236, 240, 241, 0.48);
 // $skinBlack: rgb(55, 71, 79);
 // $panelHeaderBck: $skinBlack;
@@ -48,7 +48,7 @@ $menu-arrow-dark-icon-url: 'active_admin/nested_menu_arrow_dark.gif' !default;
   color: #fff !important;
 }
 .table_tools_segmented_control li a{
-  background: #038C3E !important;
+  background: #0a375b !important;
 }
 .select2-dropdown {
     z-index: 3000
@@ -594,8 +594,8 @@ body.index.active_admin {
 // header
 #wrapper #header {
   height: 70px !important;
-  background-color: #0d94d5 !important;
-  border-bottom: 1px solid #0d94d5 !important;
+  background-color: #00018e !important;
+  border-bottom: 1px solid #00018e !important;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
 }
 

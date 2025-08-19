@@ -1,5 +1,5 @@
 ActiveAdmin.register CourseRegistration do
-  menu parent: "Student managment"
+  menu parent: 'Student Management', priority: 1
   config.batch_actions = true
 
 
