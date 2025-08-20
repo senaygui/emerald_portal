@@ -88,6 +88,6 @@ test:
 #
 production:
   <<: *default
-  database: nuf_africa_production
-  username: portal_system
-  password: <%= ENV['PORTAL_SYSTEM_DATABASE_PASSWORD'] %>
+  database: <%= Rails.application.credentials.dig(:production, :db, :database) %>
+  username: <%= Rails.application.credentials.dig(:production, :db, :username) %>
+  password: <%= Rails.application.credentials.dig(:production, :db, :password) %>
