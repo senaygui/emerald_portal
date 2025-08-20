@@ -19,7 +19,9 @@ ActiveAdmin.register Batch do
   end
 
   filter :batch_title
-  filter :program, as: :select, collection: Program.all.map { |p| [p.program_name, p.id] }
+  filter :program_id, as: :search_select_filter, url: proc { admin_programs_path },
+                      fields: %i[program_name id], display_name: 'program_name', minimum_input_length: 2,
+                      order_by: 'created_at_asc'
   filter :starting_date
   filter :ending_date
   filter :total_number_of_students

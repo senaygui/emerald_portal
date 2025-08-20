@@ -22,8 +22,12 @@ ActiveAdmin.register Invoice do
   filter :invoice_number
   filter :student_full_name_cont, as: :string, label: 'Student Name'
   filter :student_id_number_cont, as: :string, label: 'Student ID'
-  filter :program, as: :select, collection: -> { Program.all.map { |p| [p.program_name, p.id] } }
-  filter :batch, as: :select, collection: -> { Batch.all.map { |b| [b.batch_title, b.id] } }
+  filter :program_id, as: :search_select_filter, url: proc { admin_programs_path },
+                      fields: %i[program_name id], display_name: 'program_name', minimum_input_length: 2,
+                      order_by: 'created_at_asc'
+  filter :batch_id, as: :search_select_filter, url: proc { admin_batches_path },
+                      fields: %i[batch_title id], display_name: 'batch_title', minimum_input_length: 2,
+                      order_by: 'created_at_asc'
   filter :invoice_status, as: :select, collection: ['unpaid', 'pending', 'approved', 'denied', 'incomplete']
   filter :due_date
   filter :created_at

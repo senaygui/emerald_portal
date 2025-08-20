@@ -13,8 +13,12 @@ ActiveAdmin.register Student do
   filter :email
   filter :first_name
   filter :last_name
-  filter :program, as: :select, collection: Program.all.map { |p| [p.program_name, p.id] }
-  filter :batch, as: :select, collection: Batch.all.map { |p| [p.batch_title, p.id] }
+  filter :program_id, as: :search_select_filter, url: proc { admin_programs_path },
+                      fields: %i[program_name id], display_name: 'program_name', minimum_input_length: 2,
+                      order_by: 'created_at_asc'
+  filter :batch_id, as: :search_select_filter, url: proc { admin_batches_path },
+                      fields: %i[batch_title id], display_name: 'batch_title', minimum_input_length: 2,
+                      order_by: 'created_at_asc'
   filter :gender, as: :select, collection: %w[Male Female Other]
   filter :account_status, as: :select, collection: %w[active inactive suspended]
   filter :created_at

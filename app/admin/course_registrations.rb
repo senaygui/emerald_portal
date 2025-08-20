@@ -19,8 +19,12 @@ ActiveAdmin.register CourseRegistration do
   # Filters
   filter :student_full_name
   filter :student_id
-  filter :program, as: :select, collection: -> { Program.all.map { |p| [p.program_name, p.id] } }
-  filter :batch, as: :select, collection: -> { Batch.all.map { |b| [b.batch_title, b.id] } }
+  filter :program_id, as: :search_select_filter, url: proc { admin_programs_path },
+                      fields: %i[program_name id], display_name: 'program_name', minimum_input_length: 2,
+                      order_by: 'created_at_asc'
+  filter :batch_id, as: :search_select_filter, url: proc { admin_batches_path },
+                      fields: %i[batch_title id], display_name: 'batch_title', minimum_input_length: 2,
+                      order_by: 'created_at_asc'
   filter :course_title
   filter :enrollment_status, as: :select, collection: ['pending', 'enrolled', 'dropped']
   filter :created_at
