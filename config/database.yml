@@ -87,7 +87,11 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
-  <<: *default
-  database: <%= Rails.application.credentials.dig(:production, :db, :database) %>
-  username: <%= Rails.application.credentials.dig(:production, :db, :username) %>
-  password: <%= Rails.application.credentials.dig(:production, :db, :password) %>
+  adapter: postgresql
+  encoding: unicode
+  database: <%= Rails.application.credentials.dig(:db, :database) %>
+  username: <%= Rails.application.credentials.dig(:db, :username) %>
+  password: <%= Rails.application.credentials.dig(:db, :password) %>
+  host: <%= Rails.application.credentials.dig(:db, :host) %>
+  port: 5432
+  pool: 5
