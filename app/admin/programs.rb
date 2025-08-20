@@ -41,7 +41,6 @@ ActiveAdmin.register Program do
       f.input :overview, as: :text
       f.input :program_description, as: :text, input_html: { rows: 5 }
       f.input :total_tuition
-      f.
       f.input :created_by, input_html: { value: current_admin_user.name }, as: :hidden
       f.input :last_updated_by, input_html: { value: current_admin_user.name }, as: :hidden
     end
