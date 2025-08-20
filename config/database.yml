@@ -89,9 +89,9 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  database: <%= Rails.application.credentials.dig(:db, :database) %>
-  username: <%= Rails.application.credentials.dig(:db, :username) %>
-  password: <%= Rails.application.credentials.dig(:db, :password) %>
-  host: <%= Rails.application.credentials.dig(:db, :host) %>
+  database: <%= Rails.application.credentials.dig(:production, :database) %>
+  username: <%= Rails.application.credentials.dig(:production, :username) %>
+  password: <%= Rails.application.credentials.dig(:production, :password) %>
+  host: 127.0.0.1
   port: 5432
   pool: 5
