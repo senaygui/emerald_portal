@@ -90,9 +90,9 @@ ActiveAdmin.register AdminUser do
 
       # Faculty input, initially hidden
       # f.input :faculty, as: :select, collection: Faculty.all, label: "Faculty", input_html: { class: 'faculty-select' }
-      f.input :faculty, as: :select, collection: Faculty.all.map { |f|
-                                                   [f.faculty_name, f.id]
-                                                 }, label: 'Faculty', input_html: { class: 'faculty-select' }
+      # f.input :faculty, as: :select, collection: Faculty.all.map { |f|
+      #                                              [f.faculty_name, f.id]
+      #                                            }, label: 'Faculty', input_html: { class: 'faculty-select' }
 
       f.input :position, input_html: { class: 'position-select' }
       f.input :educational_level, input_html: { class: 'educational-level-select' }
