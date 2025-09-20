@@ -41,7 +41,7 @@ class AttendancePdfGenerator
     pdf.image 'app/assets/images/logo.png', at: [pdf.bounds.left + 10, pdf.bounds.top - 10]
 
     # Title
-    pdf.text_box 'Nuf Africa  Portal Attendance Sheet', at: [0, pdf.bounds.top - 30], width: pdf.bounds.width,
+    pdf.text_box 'Emerald International College  Portal Attendance Sheet', at: [0, pdf.bounds.top - 30], width: pdf.bounds.width,
                                                         align: :center, size: 30
   end
 

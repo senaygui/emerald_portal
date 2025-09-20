@@ -6,7 +6,7 @@ class StudentTemporary < Prawn::Document
       move_down 100
       #  text "Full Name: <u>#{stud.name.full.capitalize}</u>         Sex: <u>#{stud.gender.capitalize}</u>           Year: <u>#{stud.student.year}</u> ",:inline_format => true, size: 12, font_style: :bold
       move_down 10
-      text 'Nuf Africa ', inline_format: true, size: 20, align: :center
+      text 'Emerald International College ', inline_format: true, size: 20, align: :center
       move_down 10
       text 'OFFICE OF THE REGISTRAR', inline_format: true, size: 18, align: :center
       move_down 10
@@ -19,7 +19,7 @@ class StudentTemporary < Prawn::Document
                                                                                             size: 18, align: :center
       stroke_horizontal_rule
       move_down 20
-      text 'Graduated from Nuf Africa ', inline_format: true, size: 18, align: :center
+      text 'Graduated from Emerald International College ', inline_format: true, size: 18, align: :center
       move_down 20
       text 'with', inline_format: true, size: 18, align: :center
       move_down 20
@@ -43,7 +43,7 @@ class StudentTemporary < Prawn::Document
     repeat :all do
       bounding_box [bounds.left, bounds.top], width: bounds.width do
         font 'Helvetica'
-        image open('app/assets/images/logo-nuf.jpg'), fit: [120, 100], position: :center
+        image open('app/assets/images/logo-emerald.png'), fit: [120, 100], position: :center
         stroke_horizontal_rule
       end
 
@@ -51,7 +51,7 @@ class StudentTemporary < Prawn::Document
       #     font "Helvetica"
       #     stroke_horizontal_rule
       #     move_down(5)
-      #     text "Nuf Africa  Registrar Portal", :size => 16, align: :center
+      #     text "Emerald International College  Registrar Portal", :size => 16, align: :center
       #     text "+251-9804523154", :size => 16, align: :center
 
       # end

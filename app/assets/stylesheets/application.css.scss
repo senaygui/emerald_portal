@@ -222,17 +222,17 @@ p.declaration {
 
  /* ===== Auth/Login Page Enhancements ===== */
  :root {
-  /* Logo-derived palette: navy, teal, orange */
-  --brand-1: #0d2a45; /* navy */
-  --brand-2: #0b6d7a; /* teal */
-  --brand-3: #f39c12; /* orange accent */
+  /* Logo-derived palette: emerald greens */
+  --brand-1: #0a6d2a; /* dark emerald */
+  --brand-2: #fbf922; /* emerald */
+  --brand-3: #2ecc71; /* light emerald accent */
  }
   .auth-wrapper {
     background: #f5f7fb;
   }
 
   .auth-left {
-    background: linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 55%, rgba(243,156,18,0.65) 110%);
+    background: linear-gradient(135deg, #0d2a45 0%, #0b6d7a 55%, rgba(243,156,18,0.65) 110%);
     position: relative;
     overflow: hidden;
   }
@@ -264,7 +264,7 @@ p.declaration {
  .auth-left .bg-shape-2 {
    width: 260px;
    height: 260px;
-   background: #00e5ff;
+   background: #a8f0c6;
    bottom: -80px;
    left: -80px;
    animation: float 10s ease-in-out infinite reverse;
@@ -326,12 +326,12 @@ p.declaration {
 /* Brand button */
 .btn-brand {
   color: #0b1b2e;
-  background: linear-gradient(135deg, var(--brand-3) 0%, #ffd37a 100%);
+  background: linear-gradient(135deg, var(--brand-3) 0%, #a8e6b0 100%);
   border: 0;
 }
 .btn-brand:hover {
   filter: brightness(0.98);
-  box-shadow: 0 .75rem 1.25rem rgba(243,156,18,.25);
+  box-shadow: 0 .75rem 1.25rem rgba(46,204,113,.25);
 }
 .btn-brand:disabled { opacity: .8; }
 

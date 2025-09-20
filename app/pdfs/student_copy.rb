@@ -4,7 +4,7 @@ class StudentCopy < Prawn::Document
     @students = students
     gc_date = Date.parse(gc_date)
     @students.each_with_index do |stud, _index|
-      text 'Nuf Africa ', inline_format: true, size: 12, align: :center, font_style: :bold
+      text 'Emerald International College ', inline_format: true, size: 12, align: :center, font_style: :bold
       move_down 10
       text 'OFFICE OF THE REGISTRAR', inline_format: true, size: 12, align: :center, font_style: :bold
       move_down 10

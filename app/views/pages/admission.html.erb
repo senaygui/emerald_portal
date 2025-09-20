@@ -4,7 +4,7 @@
 <div id="particles-js"></div>
 <style type="text/css">
   body {
-    background: #f0f0f0;
+    background: #f5fbf7;
     font-family: 'Raleway', Arial, sans-serif;
   }
 
@@ -33,7 +33,7 @@
   }
 
   .card-header {
-    background-color: #036696;
+    background: linear-gradient(90deg, var(--brand-1) 0%, var(--brand-2) 100%);
     color: #ffffff;
     border-radius: 10px 10px 0 0;
     padding: 1rem;
@@ -59,7 +59,7 @@
     margin-bottom: 20px;
     padding: 30px 20px;
     border-radius: 12px;
-    background: linear-gradient(135deg, #077b3f 0%, #036696 100%);
+    background: linear-gradient(135deg, var(--brand-2) 0%, var(--brand-1) 100%);
     transition: box-shadow 0.3s, transform 0.3s, background 0.3s;
     text-align: center;
     color: #fff;
@@ -79,16 +79,16 @@
   }
 
   .icon-box:hover, .icon-box:focus {
-    background: linear-gradient(135deg, #036696 0%, #077b3f 100%);
-    box-shadow: 0 8px 24px rgba(3,123,63,0.18);
+    background: linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 100%);
+    box-shadow: 0 8px 24px rgba(46,204,113,0.18);
     transform: translateY(-4px) scale(1.03);
-    border-color: #077b3f;
+    border-color: var(--brand-2);
     color: #fff;
   }
 
   .icon-box:active {
-    background: #036696;
-    border-color: #077b3f;
+    background: var(--brand-1);
+    border-color: var(--brand-2);
     color: #fff;
   }
 
@@ -144,17 +144,17 @@
     }
   }
   .icon-box-regular-degree {
-    background: linear-gradient(135deg, #077b3f 0%, #36d1c4 100%);
+    background: linear-gradient(135deg, var(--brand-2) 0%, #a8e6b0 100%);
   }
   .icon-box-regular-masters {
-    background: linear-gradient(135deg, #e53935 0%, #ff6f00 100%);
+    background: linear-gradient(135deg, var(--brand-1) 0%, var(--brand-3) 100%);
     color: #fff;
   }
   .icon-box-regular-masters h4 {
     color: #fff;
   }
   .icon-box-extension-degree {
-    background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+    background: linear-gradient(135deg, var(--brand-3) 0%, #a8f0c6 100%);
     color: #333;
   }
   .icon-box-extension-degree h4 {
@@ -167,8 +167,8 @@
     <div class="row justify-content-center">
       <!-- Main Admission Content -->
       <div class="col-12 col-lg-8 col-md-8">
-        <div class="card card-primary" style="background: linear-gradient(120deg, #009fe3 0%, #ff9900 100%); box-shadow: 0 4px 24px rgba(0,159,227,0.08); border: none;">
-          <div class="card-header" style="background: linear-gradient(90deg, #009fe3 0%, #ff9900 100%); color: #fff; border-radius: 10px 10px 0 0;">
+        <div class="card card-primary" style="background: linear-gradient(120deg, var(--brand-1) 0%, var(--brand-2) 100%); box-shadow: 0 4px 24px rgba(0,0,0,0.08); border: none;">
+          <div class="card-header" style="background: linear-gradient(90deg, var(--brand-1) 0%, var(--brand-2) 100%); color: #fff; border-radius: 10px 10px 0 0;">
             <h3 class="card-title">
               <i class="fas fa-info-circle mr-2"></i>
               <strong>Instruction</strong>
@@ -176,11 +176,10 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body" style="background: rgba(255,255,255,0.95); border-radius: 0 0 10px 10px;">
-            <h2 style="color: #009fe3; font-weight: 700;">In What Level Of Training  Do You Want To Enroll?</h2>
+            <h2 style="color: var(--brand-1); font-weight: 700;">In What Level Of Training  Do You Want To Enroll?</h2>
             <div class="row justify-content-center">
               <% @programs.each_with_index do |program, idx| %>
-                <% card_bg = idx.even? ? 'background: linear-gradient(135deg, #36d1c4 0%, #009fe3 100%);' : 'background: linear-gradient(135deg, #ff9900 
-                  0%, #f7971e 100%); color: #333;' %>
+                <% card_bg = idx.even? ? 'background: linear-gradient(135deg, var(--brand-2) 0%, var(--brand-1) 100%);' : 'background: linear-gradient(135deg, var(--brand-1) 0%, var(--brand-3) 100%); color: #fff;' %>
                 <div class="col-lg-5 col-md-6 mb-4">
                   <%= link_to new_student_registration_path(program_id: program.id), data: { turbo: false, turbolinks: false }, class: 'icon-box-link' do %>
                     <div class="icon-box" style="<%= card_bg %>">
@@ -217,7 +216,7 @@
             }
           },
           "color": {
-            "value": ["#009fe3", "#ff9900", "#ffffff"]
+            "value": ["#1ea54c", "#0a6d2a", "#ffffff"]
           },
           "shape": {
             "type": "circle",
@@ -237,7 +236,7 @@
           "line_linked": {
             "enable": true,
             "distance": 150,
-            "color": "#009fe3",
+            "color": "#1ea54c",
             "opacity": 0.7,
             "width": 2.8
           },

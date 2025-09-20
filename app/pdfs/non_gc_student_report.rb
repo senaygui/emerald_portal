@@ -7,7 +7,7 @@ class NonGcStudentReport < Prawn::Document
       stroke_horizontal_rule
       move_down 12
       table [
-              ['Name of the HEI : Nuf Africa ', ' ', 'Location: Addis Ababa'],
+              ['Name of the HEI : Emerald International College ', ' ', 'Location: Addis Ababa'],
               ["Program Name : #{student.program.program_name.capitalize}", 'Program Level : Undrgaduate '],
               ["Modality : #{student.admission_type.capitalize}"],
               ["Admission Date: #{student.admission_date.strftime('%B,%d %Y')}"]

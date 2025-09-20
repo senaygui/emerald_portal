@@ -9,15 +9,15 @@ class StudentGrade < ApplicationRecord
 
 
   def moodle_grade
-    url = URI('https://www.nuf.edu.et/webservice/rest/server.php')
-    moodle = MoodleRb.new('ebf389740b514fdfa03fc804d767f127', 'https://www.nuf.edu.et/webservice/rest/server.php')
+    url = URI('http://15.235.65.231:4344/webservice/rest/server.php')
+    moodle = MoodleRb.new('3c5e7c848f2300ce8c82c667f4a03516', 'http://15.235.65.231:4344/webservice/rest/server.php')
     lms_student = moodle.users.search(email: "#{student.email}")
     user = lms_student[0]['id']
     https = Net::HTTP.new(url.host, url.port)
     https.use_ssl = true
 
     request = Net::HTTP::Post.new(url)
-    form_data = [%w[wstoken ebf389740b514fdfa03fc804d767f127],
+    form_data = [%w[wstoken 3c5e7c848f2300ce8c82c667f4a03516],
                  %w[wsfunction gradereport_overview_get_course_grades], %w[moodlewsrestformat json], ['userid', "#{user}"]]
     request.set_form form_data, 'multipart/form-data'
     response = https.request(request)

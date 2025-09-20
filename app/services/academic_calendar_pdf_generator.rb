@@ -29,7 +29,7 @@ class AcademicCalendarPdfGenerator
   end
 
   def header(pdf)
-    pdf.text 'Nuf Africa  Portal Academic Calendar', size: 24, style: :bold, align: :center
+    pdf.text 'Emerald International College  Portal Academic Calendar', size: 24, style: :bold, align: :center
     pdf.move_down 20
     pdf.text "Calendar Year: #{@academic_calendar.calender_year}", size: 14
     pdf.text "Admission Type: #{@academic_calendar.admission_type}", size: 14

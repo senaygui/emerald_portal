@@ -219,7 +219,7 @@ ActiveAdmin.register Invoice do
   controller do
     def testmoodle
       if @invoice.invoice_status == 'approved'
-        @moodle = MoodleRb.new('ebf389740b514fdfa03fc804d767f127', 'https://www.nuf.edu.et/webservice/rest/server.php')
+        @moodle = MoodleRb.new('3c5e7c848f2300ce8c82c667f4a03516', 'http://15.235.65.231:4344/webservice/rest/server.php')
         unless @moodle.users.search(email: "#{@invoice.student.email}").present?
           student = @moodle.users.create(
               username: "#{@invoice.student.student_id.downcase}",

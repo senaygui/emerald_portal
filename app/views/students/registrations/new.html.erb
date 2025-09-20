@@ -1,24 +1,8 @@
 <%provide(:title, "Sign Up")%>
 <style type="text/css">
   * {box-sizing: border-box;}
-  body {background-color: #f1f1f1;}
+  body {background-color: #f5fbf7;}
   h1 {text-align: center; }
-  button, .btn-primary, .btn.btn-lg.btn-primary {
-    background: linear-gradient(90deg, #ff9900 0%, #009fe3 100%) !important;
-    color: #fff !important;
-    border: none;
-    padding: 16px 40px;
-    font-size: 22px;
-    font-family: Raleway;
-    cursor: pointer;
-    border-radius: 6px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-    transition: background 0.3s;
-  }
-  button:hover, .btn-primary:hover, .btn.btn-lg.btn-primary:hover {
-    opacity: 0.92;
-    background: linear-gradient(90deg, #009fe3 0%, #ff9900 100%) !important;
-  }
   .fixed-submit {
     position: fixed;
     left: 0;
@@ -35,18 +19,18 @@
   }
   /* Enhanced card styles */
   .card.card-primary {
-    background: linear-gradient(135deg, #f8fafc 0%, #e3f0ff 100%);
+    background: linear-gradient(135deg, #f8fafc 0%, #e8f9ef 100%);
     border-radius: 18px;
-    box-shadow: 0 6px 32px 0 rgba(0,159,227,0.10), 0 1.5px 6px 0 rgba(255,153,0,0.08);
+    box-shadow: 0 6px 32px 0 rgba(10,109,42,0.10), 0 1.5px 6px 0 rgba(46,204,113,0.12);
     border: none;
     transition: box-shadow 0.3s, transform 0.2s;
   }
   .card.card-primary:hover {
-    box-shadow: 0 12px 48px 0 rgba(0,159,227,0.18), 0 3px 12px 0 rgba(255,153,0,0.12);
+    box-shadow: 0 12px 48px 0 rgba(10,109,42,0.18), 0 3px 12px 0 rgba(46,204,113,0.18);
     transform: translateY(-2px) scale(1.01);
   }
   .card-header {
-    background: linear-gradient(90deg, #ff9900 0%, #009fe3 100%);
+    background: linear-gradient(90deg, var(--brand-1) 0%, var(--brand-2) 100%);
     color: #fff;
     border-radius: 18px 18px 0 0;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
@@ -70,7 +54,7 @@
   }
   /* Interactive instruction card */
   .card.card-primary .card-body p strong {
-    color: #ff9900;
+    color: var(--brand-3);
     font-size: 1.08em;
   }
   .card.card-primary .card-body ol.text-muted li {
@@ -81,11 +65,11 @@
     transition: background 0.2s;
   }
   .card.card-primary .card-body ol.text-muted li:hover {
-    background: #e3f0ff;
-    color: #009fe3;
+    background: #e9f7ef;
+    color: var(--brand-1);
   }
   .card.card-primary .card-body hr {
-    border-top: 2px solid #ff9900;
+    border-top: 2px solid var(--brand-3);
     width: 60%;
     margin: 18px auto 10px auto;
     opacity: 0.5;
@@ -176,7 +160,7 @@
                           <div class="col-12 col-md-9">
                             <%= render 'basic', f: f %>
                             <div class="fixed-submit">
-                              <%= f.button :submit, "Register Now", class: "btn btn-primary", id: "student-submit", title: "Fill the required form fields" %>
+                              <%= f.button :submit, "Register Now", class: "btn btn-brand btn-lg", id: "student-submit", title: "Fill the required form fields" %>
                             </div>
                           </div>
                         </div>
